@@ -10,14 +10,23 @@
             do
             {
                 game.DrawRoom(room2isAvailable);
-                Console.Write("Co robisz ? (Aby zobaczyć listę dostępnych opcji wpisz pomoc.): ");
-                string userChoice = Console.ReadLine().ToUpper();
-
-                switch (userChoice)
+                game.ShowPlayerItems();
+                Console.Write("Co robisz ? (Aby zobaczyć listę dostępnych opcji wpisz pomoc): ");
+                string playerMove = game.PlayerMove();
+                switch (playerMove)
                 {
-                    
+                    case "O":
+                    case "OTWÓRZ":
+                    case "OTWORZ":
+                        game.OpenItem(game.PlayerItem(playerMove));
+                        break;
+                    case "P":
+                    case "PRZESUŃ":
+                    case "PRZESUN":
+                        game.MoveItem(game.PlayerItem(playerMove));
+                        break;
                     case "POMOC":
-                        game.Help();
+                        game.getHelp();
                         break;
                     default:
                         Console.WriteLine("Niepoprawny wybór:");
