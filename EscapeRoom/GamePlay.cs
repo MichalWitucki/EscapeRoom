@@ -12,51 +12,54 @@ namespace EscapeRoom
         public Room room1 = new Room();
         public List<Item> items = new List<Item>();
         public List<Item> equipment = new List<Item>();
+        Item commode = new Item("Komoda", true, false, true, true, 0, 4);
+        Item armchair = new Item("Fotel", true, false, false, true, 0, 0);
+        Item painting = new Item("Obraz", true, false, false, true, 0, 2);
+        Item wardrobe = new Item("Szafa", false, false, false, true, 4, 0);
+        Item stool = new Item("Taboret", true, true, false, true, 4, 4);
+        Item plant = new Item("Roślina", true, true, false, false, 4, 4);
+        Item doormat = new Item("Wycieraczka", true, true, false, false, 2, 4);
+        Item door = new Item("Drzwi", false, false, true, true, 2, 5);
+        Item player = new Item("Gracz", false, false, false, true, 2, 0);
+
+
+
 
         //Room room2 = new Room();
         public GamePlay()
         {
-            Item commode = new Item("Komoda", true, false, true, 0, 4);
             items.Add(commode);
-            Item armchair = new Item("Fotel", true, false, false, 0 , 0);
             items.Add(armchair);
-            Item painting = new Item("Obraz", true, false, false, 0, 2);
             items.Add(painting);
-            Item wardrobe = new Item("Szafa", false, false, false, 4, 0);
             items.Add(wardrobe);
-            Item stool = new Item("Taboret", true, true, false, 4, 4);
             items.Add(stool);
-            Item plant = new Item("Roślina", true, true, false, 4, 4);
             items.Add(plant);
-            Item doormat = new Item("Wycieraczka", true, true, false, 2, 4);
             items.Add(doormat);
-            Item door = new Item("Drzwi", false, false, true, 2, 5);
             items.Add(door);
-            Item player = new Item("Gracz", 2, 0);
             items.Add(player);
+            
 
-            ReloadRoom();
-           
-            room1.room[commode.yCoordinate, commode.xCoordinate] = commode.ShortName;
-            room1.room[armchair.yCoordinate, armchair.xCoordinate] = armchair.ShortName;
-            room1.room[painting.yCoordinate, painting.xCoordinate] = painting.ShortName;
-            room1.room[wardrobe.yCoordinate, wardrobe.xCoordinate] = wardrobe.ShortName;
-            room1.room[stool.yCoordinate, stool.yCoordinate] = stool.ShortName;
-            room1.room[door.yCoordinate, door.xCoordinate] = door.ShortName;
-            room1.room[player.yCoordinate, player.xCoordinate] = player.ShortName;
+
         }
 
         internal void ReloadRoom()
         {
-            room1.room[commode.yCoordinate, commode.xCoordinate] = commode.ShortName;
-            room1.room[armchair.yCoordinate, armchair.xCoordinate] = armchair.ShortName;
-            room1.room[painting.yCoordinate, painting.xCoordinate] = painting.ShortName;
-            room1.room[wardrobe.yCoordinate, wardrobe.xCoordinate] = wardrobe.ShortName;
-            room1.room[stool.yCoordinate, stool.yCoordinate] = stool.ShortName;
-            room1.room[door.yCoordinate, door.xCoordinate] = door.ShortName;
-            room1.room[player.yCoordinate, player.xCoordinate] = player.ShortName;
+            foreach (Item item in items)
+            {
+                
+                if (item.IsVisibleNow)
+                    room1.room[item.yCoordinate, item.xCoordinate] = item.ShortName;
+            }
+            //room1.room[commode.yCoordinate, commode.xCoordinate] = commode.ShortName;
+            //room1.room[armchair.yCoordinate, armchair.xCoordinate] = armchair.ShortName;
+            //room1.room[painting.yCoordinate, painting.xCoordinate] = painting.ShortName;
+            //room1.room[wardrobe.yCoordinate, wardrobe.xCoordinate] = wardrobe.ShortName;
+            //room1.room[stool.yCoordinate, stool.xCoordinate] = stool.ShortName;
+            //room1.room[door.yCoordinate, door.xCoordinate] = door.ShortName;
+            //room1.room[player.yCoordinate, player.xCoordinate] = player.ShortName;
+           
         }
-        
+
         internal void DrawRoom(bool room)
         {
             switch (room)
@@ -100,18 +103,29 @@ namespace EscapeRoom
 
         internal void getHelp()
         {
-            Console.WriteLine("Przedmioty, które mogą znajdować się w pokoju:\nG - gracz, D - drzwi, F - fotel, O - obraz, K - komoda, " +
-                "S - szafa, T- taboret, R - roślina, W - wycieraczka.");
-            Console.WriteLine("Dostępne akcje:" +
-                "\nU - użyj przedmiotu z ekwipunku, P - przesuń przedmiot, Z - zabierz, O - otwórz.");
+            Console.WriteLine("Przedmioty, które znajdują się w pokoju: ");
+            foreach (var item in items)
+            {
+                if (item.IsVisibleNow)
+                    Console.Write($"{item.ShortName} = {item.Name}, ");
+            }
+            Console.WriteLine("\nDostępne akcje:\nU = użyj przedmiotu z ekwipunku, P = przesuń przedmiot, Z = zabierz przedmiot, O = otwórz przedmiot.");
         }
 
         internal void ShowPlayerItems()
         {
-            foreach (var item in equipment)
+            Console.Write("Twój ekwipunek: ");
+            if (equipment.Count() == 0) 
+                Console.Write("jest pusty.");
+            else
             {
-                Console.Write(item);
+                foreach (var item in equipment)
+                {
+                    Console.Write($"{item.ShortName}, ");
+
+                }
             }
+            Console.WriteLine();
         }
 
         internal string PlayerMove()
@@ -132,19 +146,27 @@ namespace EscapeRoom
         {
             if (items.Contains(item))
             {
-                if (item.IsMoveable)
+                if (item.IsVisibleNow)
                 {
-                    if (item.IsMoved)
-                        Console.WriteLine($"Przedmiot: {item.Name} został już przesunięty.");
-                    else
+                    if (item.IsMoveable)
                     {
-                        item.SetNewXCoordinate();
-                        item.IsMoved = true;
-                        Console.WriteLine($"Przesunięto: {item.Name}.");
+                        if (item.IsMoved)
+                            Console.WriteLine($"Przedmiot: {item.Name} został już przesunięty.");
+                        else
+                        {
+                            room1.room[item.yCoordinate, item.xCoordinate] = " ";
+                            item.SetNewXCoordinate();
+                            item.IsMoved = true;
+                            Console.WriteLine($"Przesunięto: {item.Name}.");
+                        }
                     }
+                    else
+                        Console.WriteLine($"Nie można przesunąć przedmiotu: {item.Name}.");
                 }
                 else
-                    Console.WriteLine($"Nie można przesunąć przedmiotu: {item.Name}."); 
+                    Console.WriteLine("W pokoju nie ma takiego przedmiotu.");
+
+                 
             }
             else
                 Console.WriteLine("Niepoprawny wybór.");
@@ -154,18 +176,53 @@ namespace EscapeRoom
         {
             if (items.Contains(item))
             {
-                if (item.IsOpenable)
+                if (item.IsVisibleNow)
                 {
-                    if (item.IsOpen)
-                        Console.WriteLine($"Przedmiot: {item.Name} został już otwarty.");
-                    else
+                    if (item.IsOpenable)
                     {
-                        Console.WriteLine(item.IsOpen);
-                        Console.WriteLine("mamy to");
+                        if (item.IsOpen)
+                            Console.WriteLine($"Przedmiot: {item.Name} został już otwarty.");
+                        else
+                        {
+                            item.IsOpen = true;
+                            Console.WriteLine($"Otwarto: {item.Name}.");
+                        }
                     }
+                    else
+                        Console.WriteLine($"Nie można otworzyć przedmiotu: {item.Name}.");
                 }
                 else
-                    Console.WriteLine($"Nie można otworzyć przedmiotu: {item.Name}.");
+                    Console.WriteLine("W pokoju nie ma takiego przedmiotu.");
+
+            }
+            else
+                Console.WriteLine("Niepoprawny wybór.");
+        }
+
+        internal void TakeItem(Item item)
+        {
+            if (items.Contains(item))
+            {
+                if (item.IsVisibleNow)
+                {
+                    if (item.IsTakeable)
+                    {
+                        if (item.IsTaken)
+                            Console.WriteLine($"Przedmiot: {item.Name} został już zabrany.");
+                        else
+                        {
+                            room1.room[item.yCoordinate, item.xCoordinate] = " ";
+                            item.IsVisibleNow = false;
+                            item.IsTaken = true;
+                            equipment.Add(item);
+                            Console.WriteLine($"Zabrano: {item.Name}.");
+                        }
+                    }
+                    else
+                        Console.WriteLine($"Nie można zabrać przedmiotu: {item.Name}.");
+                }
+                else
+                    Console.WriteLine("W pokoju nie ma takiego przedmiotu.");
             }
             else
                 Console.WriteLine("Niepoprawny wybór.");

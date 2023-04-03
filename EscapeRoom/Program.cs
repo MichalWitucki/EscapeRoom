@@ -9,21 +9,21 @@
             Console.WriteLine("Zanjdujesz się w pokoju bez okien. Spróbuj z niego wyjść.");
             do
             {
+                game.ReloadRoom();
                 game.DrawRoom(room2isAvailable);
                 game.ShowPlayerItems();
-                Console.Write("Co robisz ? (Aby zobaczyć listę dostępnych opcji wpisz pomoc): ");
+                Console.Write("Co robisz ? (Używaj skrótów. Aby zobaczyć listę dostępnych opcji wpisz pomoc): ");
                 string playerMove = game.PlayerMove();
                 switch (playerMove)
                 {
                     case "O":
-                    case "OTWÓRZ":
-                    case "OTWORZ":
                         game.OpenItem(game.PlayerItem(playerMove));
                         break;
                     case "P":
-                    case "PRZESUŃ":
-                    case "PRZESUN":
                         game.MoveItem(game.PlayerItem(playerMove));
+                        break;
+                    case "Z":
+                        game.TakeItem(game.PlayerItem(playerMove));
                         break;
                     case "POMOC":
                         game.getHelp();
