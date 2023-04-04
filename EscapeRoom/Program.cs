@@ -4,15 +4,16 @@
     {
         static void Main(string[] args)
         {
-            bool room2isAvailable = false; 
+             
             var game = new GamePlay();
             Console.WriteLine("Zanjdujesz się w pokoju bez okien. Spróbuj z niego wyjść.");
             do
             {
                 game.ReloadRoom();
-                game.DrawRoom(room2isAvailable);
+                game.DrawRoom();
                 game.ShowPlayerItems();
-                Console.Write("Co robisz ? (Używaj skrótów. Aby zobaczyć listę dostępnych opcji wpisz pomoc): ");
+                Console.WriteLine();
+                Console.WriteLine("Co robisz ? (Używaj skrótów. Aby zobaczyć listę dostępnych opcji wpisz pomoc): ");
                 string playerMove = game.PlayerMove();
                 switch (playerMove)
                 {

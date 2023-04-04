@@ -15,11 +15,12 @@ namespace EscapeRoom
         public bool IsOpen { get; set; }
         public bool IsTaken { get; set; }
         public bool IsVisibleNow { get; set; }
-        public bool IsMoveable { get; private set; }
-        public bool IsTakeable { get; private set; }
-        public bool IsOpenable { get; private set; }
-        public byte xCoordinate { get; set; }
-        public byte yCoordinate { get; set; }
+        public bool IsMoveable { get; set; }
+        public bool IsTakeable { get; set; }
+        public bool IsOpenable { get; set; }
+        public int xCoordinate { get; set; }
+        public int yCoordinate { get; set; }
+        public int Secret { get; set; }
 
         public Item(string Name, bool isMoveable, bool isTakeable, bool isOpenable, bool isVisibleNow, byte yCoordinate, byte xCoordinate) 
         {
@@ -32,17 +33,7 @@ namespace EscapeRoom
             this.yCoordinate = yCoordinate;
             this.xCoordinate = xCoordinate;
         }
-        public Item(string Name, string ShortName, bool isMoveable, bool isTakeable, bool isOpenable, bool isVisibleNow, byte yCoordinate, byte xCoordinate)
-        {
-            this.Name = Name;
-            this.ShortName = ShortName;
-            this.IsMoveable = isMoveable;
-            this.IsTakeable = isTakeable;
-            this.IsOpenable = isOpenable;
-            this.IsVisibleNow = isVisibleNow;
-            this.yCoordinate = yCoordinate;
-            this.xCoordinate = xCoordinate;
-        }
+  
 
         internal void SetNewXCoordinate()
         {
