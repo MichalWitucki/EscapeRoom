@@ -22,6 +22,9 @@
                     case "P":
                         game.MoveItem(game.PlayerItem(playerMove));
                         break;
+                    case "U":
+                        game.UseItem(game.PlayerItem(playerMove));
+                        break;
                     case "Z":
                         game.TakeItem(game.PlayerItem(playerMove));
                         break;

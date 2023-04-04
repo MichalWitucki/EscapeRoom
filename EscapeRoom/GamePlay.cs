@@ -19,10 +19,11 @@ namespace EscapeRoom
         Item stool = new Item("Taboret", true, true, false, true, 4, 4);
         Item plant = new Item("Roślina", true, true, false, false, 4, 4);
         Item doormat = new Item("Wycieraczka", true, true, false, false, 2, 4);
+        Item samllKey = new Item("Kluczyk", "°¬", false, true, false, false, 0, 4);
+        Item Key = new Item("Klucz", "O═╗", false, true, false, false, 0, 4);
+        Item Note1 = new Item("Notatka", "O═╗", false, true, false, false, 0, 4);
         Item door = new Item("Drzwi", false, false, true, true, 2, 5);
         Item player = new Item("Gracz", false, false, false, true, 2, 0);
-
-
 
 
         //Room room2 = new Room();
@@ -50,13 +51,7 @@ namespace EscapeRoom
                 if (item.IsVisibleNow)
                     room1.room[item.yCoordinate, item.xCoordinate] = item.ShortName;
             }
-            //room1.room[commode.yCoordinate, commode.xCoordinate] = commode.ShortName;
-            //room1.room[armchair.yCoordinate, armchair.xCoordinate] = armchair.ShortName;
-            //room1.room[painting.yCoordinate, painting.xCoordinate] = painting.ShortName;
-            //room1.room[wardrobe.yCoordinate, wardrobe.xCoordinate] = wardrobe.ShortName;
-            //room1.room[stool.yCoordinate, stool.xCoordinate] = stool.ShortName;
-            //room1.room[door.yCoordinate, door.xCoordinate] = door.ShortName;
-            //room1.room[player.yCoordinate, player.xCoordinate] = player.ShortName;
+            
            
         }
 
@@ -66,12 +61,13 @@ namespace EscapeRoom
             {
                 case false:
                     {
+                        Console.Write("_"); 
                         for (int i = 0; i < room1.room.GetLength(1); i++)
-                            Console.Write("_______\t");
-                        Console.WriteLine("__");
+                            Console.Write("______");
+                        Console.WriteLine("_____");
                         for (int y = 0; y < room1.room.GetLength(0); y++)
                         {
-                            Console.Write("|\t");
+                            Console.Write("|");
                             int x;
                             for (x = 0; x < room1.room.GetLength(1) - 1; x++)
                             {
@@ -80,9 +76,10 @@ namespace EscapeRoom
                             Console.Write($"{room1.room[y, x]}");
                             Console.WriteLine("|");
                         }
-                        for (int i = 0; i < room1.room.GetLength(1); i++)
-                            Console.Write("¯¯¯¯¯¯¯\t");
-                        Console.WriteLine("¯¯");
+                        Console.Write("¯"); 
+                        for (int i = 0; i < room1.room.GetLength(1)-1; i++)
+                            Console.Write("¯¯¯¯¯¯¯");
+                        Console.WriteLine("¯¯¯¯¯¯");
                         break;
                     }
 
@@ -136,10 +133,20 @@ namespace EscapeRoom
 
         internal Item PlayerItem(string move)
         {
-            Console.Write($"Jakiego przedmiotu dotyczy ruch: {move} ?: ");
-            string item = Console.ReadLine().ToUpper();
-            var playerItem = items.Find(x => x.ShortName == item);
-            return playerItem;
+            if (move == "U")
+            {
+                Console.Write($"Jakiego przedmiotu dotyczy ruch: {move} ?: ");
+                string item = Console.ReadLine().ToUpper();
+                var playerItem = equipment.Find(x => x.ShortName == item);
+                return playerItem;
+            }
+            else
+            {
+                Console.Write($"Jakiego przedmiotu dotyczy ruch: {move} ?: ");
+                string item = Console.ReadLine().ToUpper();
+                var playerItem = items.Find(x => x.ShortName == item);
+                return playerItem;
+            }
         }
 
         internal void MoveItem(Item item)
@@ -226,6 +233,20 @@ namespace EscapeRoom
             }
             else
                 Console.WriteLine("Niepoprawny wybór.");
+        }
+
+        internal void UseItem(Item item)
+        {
+            if (equipment.Contains(item))
+            {
+                equipment.Remove(item);
+                Console.WriteLine($"Użyto: {item.Name}.");
+                        
+            }
+            else
+                Console.WriteLine($"Nie ma w ekwipunku takiego przedmiotu");
+                
+           
         }
     }
 }
