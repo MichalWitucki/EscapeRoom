@@ -16,8 +16,5 @@ namespace EscapeRoom
             { " ", " ", " ", " ", " ", " " },
             { " ", " ", " ", " ", " ", " " },
         };
-        public Room() 
-        { 
-        }
     }
 }
